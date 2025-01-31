@@ -1,7 +1,7 @@
-name: EntraLogin
+name: Service
 version: 0.0.1
 lowCaseName: entralogin
-namespace: EntraLogin
+namespace: Service
 description: 'Entra Login for MODX Revolution'
 author: matdave
 menus:
