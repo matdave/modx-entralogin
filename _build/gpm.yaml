@@ -1,0 +1,10 @@
+name: EntraLogin
+version: 0.0.1
+lowCaseName: entralogin
+namespace: EntraLogin
+description: 'Entra Login for MODX Revolution'
+author: matdave
+menus:
+    -
+        text: entralogin.menu
+        action: manage

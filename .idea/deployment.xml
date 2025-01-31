@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="PublishConfigData" autoUpload="Always" serverName="me3" remoteFilesAllowedToDisappearOnAutoupload="false">
+    <serverData>
+      <paths name="me3">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/www/pkgs/entralogin" local="$PROJECT_DIR$" web="/pkgs/entralogin" />
+          </mappings>
+          <excludedPaths>
+            <excludedPath path="/www/pkgs/entralogin/config.core.php" />
+            <excludedPath path="/www/pkgs/entralogin/core/components/entralogin/vendor" />
+          </excludedPaths>
+        </serverdata>
+      </paths>
+    </serverData>
+    <option name="myAutoUpload" value="ALWAYS" />
+  </component>
+</project>
