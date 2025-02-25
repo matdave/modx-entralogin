@@ -4,7 +4,20 @@ lowCaseName: entralogin
 namespace: Service
 description: 'Entra Login for MODX Revolution'
 author: matdave
-menus:
-    -
-        text: entralogin.menu
-        action: manage
+systemSettings:
+    - key: client_id
+      area: API
+
+    - key: client_secret
+      area: API
+
+    - key: auth_code
+      area: API
+
+    - key: tenant_id
+      area: API
+      value: common
+
+    - key: allowed_hosts
+      area: API
+      value: graph.microsoft.com

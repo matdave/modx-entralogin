@@ -12,7 +12,8 @@ vendor
 
 # IDE files #
 #############
-.idea
+.idea/
+.vscode/
 .settings
 nbproject
 .project
