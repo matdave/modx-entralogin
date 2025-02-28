@@ -15,11 +15,6 @@
   },
   "require": {
     "php": ">=7.4.0",
-    "microsoft/kiota-abstractions": "^1.4",
-    "microsoft/kiota-http-guzzle": "^1.3",
-    "microsoft/kiota-authentication-phpleague": "^1.3",
-    "microsoft/kiota-serialization-json": "^1.3",
-    "microsoft/kiota-serialization-text": "^1.1",
     "matdave/modxpackage": "^1.0"
   },
   "require-dev": {

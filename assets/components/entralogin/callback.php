@@ -9,4 +9,8 @@ $modx->initialize('web');
 $entralogin = new \MODX\EntraLogin\Service($modx);
 $callback = new \MODX\EntraLogin\Callback\Callback($entralogin);
 
-$callback->handleCallback();
+try {
+    $callback->handleCallback();
+} catch (\Exception $e) {
+    echo $e->getMessage();
+}
