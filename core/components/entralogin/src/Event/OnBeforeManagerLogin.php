@@ -11,6 +11,7 @@ class OnBeforeManagerLogin extends Event
      * @var Service
      */
     protected $service;
+
     public function run()
     {
         $this->service->loadClient();

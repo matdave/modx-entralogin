@@ -60,3 +60,6 @@ plugins:
     file: Login.php
     events:
       - OnBeforeManagerLogin
+      - OnManagerLoginFormRender
+      - OnManagerLogout
+      - OnManagerPageBeforeRender

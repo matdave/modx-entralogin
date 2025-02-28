@@ -1,0 +1,11 @@
+.c-button.entra {
+    background-color:#00A4EF;
+    border-color: #006c9c;
+}
+.c-button.entra:active,
+.c-button.entra:focus,
+.c-button.entra:hover {
+    background-color:#006c9c;
+    opacity: 1;
+    color: white;
+}
