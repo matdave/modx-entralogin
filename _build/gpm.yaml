@@ -11,9 +11,6 @@ systemSettings:
     - key: client_secret
       area: API
 
-    - key: auth_code
-      area: API
-
     - key: tenant_id
       area: API
       value: common

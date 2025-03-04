@@ -1,6 +1,7 @@
 .c-button.entra {
     background-color:#00A4EF;
     border-color: #006c9c;
+    color: white;
 }
 .c-button.entra:active,
 .c-button.entra:focus,

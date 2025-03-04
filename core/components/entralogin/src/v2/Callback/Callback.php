@@ -1,25 +1,16 @@
 <?php
 
-namespace MODX\EntraLogin\Callback;
+namespace MODX\EntraLogin\v2\Callback;
 
 use Exception;
 use MODX\EntraLogin\Service;
 use MODX\EntraLogin\Services\Entra;
-use MODX\Revolution\Mail\modMail;
-use MODX\Revolution\Mail\modPHPMailer;
-use MODX\Revolution\modUser;
-use MODX\Revolution\modUserGroup;
-use MODX\Revolution\modUserGroupRole;
-use MODX\Revolution\modUserProfile;
-use MODX\Revolution\modUserSetting;
-use MODX\Revolution\modX;
-use xPDO\xPDO;
 
 class Callback
 {
     protected Service $service;
 
-    /** @var modX */
+    /** @var \modX */
     public $modx = null;
 
     public Entra $client;
@@ -97,7 +88,7 @@ class Callback
         $me = $this->client->me('/me');
         $me = json_decode($me, true);
         // search for user setting
-        $userSetting = $this->modx->getObject(modUserSetting::class,
+        $userSetting = $this->modx->getObject('modUserSetting',
             ['key' => 'entralog_id', 'value' => $me['id']]
         );
         if (!empty($userSetting)) {
@@ -109,7 +100,7 @@ class Callback
             return;
         }
         if ($this->modx->getOption('entralogin.allow_match_by_email', [], false)) {
-            $userByEmail = $this->modx->getObject(modUserProfile::class, ['email' => $me['mail']]);
+            $userByEmail = $this->modx->getObject('modUserProfile', ['email' => $me['mail']]);
             if (!empty($userByEmail)) {
                 $this->addUserSetting($userByEmail->get('internalKey'), $me['id']);
                 $this->loginUserWithID($userByEmail->get('internalKey'));
@@ -124,16 +115,16 @@ class Callback
 
     private function loginUserWithID($id): void
     {
-        $user = $this->modx->getObject(modUser::class, $id);
+        $user = $this->modx->getObject('modUser', $id);
         if (!empty($user)) {
             $this->loadUser($user);
         }
     }
 
-    private function loadUser(modUser $user): void
+    private function loadUser($user): void
     {
         $targets = explode(',', $this->modx->getOption('principal_targets', null,
-            'MODX\\Revolution\\modAccessContext,MODX\\Revolution\\modAccessResourceGroup,MODX\\Revolution\\modAccessCategory,MODX\\Revolution\\Sources\\modAccessMediaSource,MODX\\Revolution\\modAccessNamespace'));
+            'modAccessContext,modAccessResourceGroup,modAccessCategory,sources.modAccessMediaSource,modAccessNamespace'));
         array_walk($targets, 'trim');
         if ($user->get('active') === 0 || $user->get('blocked') === 1) {
             $this->sendManager();
@@ -147,7 +138,7 @@ class Callback
 
     private function addUserSetting(int $modxId, $value, $key = 'entralog_id'): void
     {
-        $setting = $this->modx->newObject(modUserSetting::class);
+        $setting = $this->modx->newObject('modUserSetting');
         $setting->set('user', $modxId);
         $setting->set('key', $key);
         $setting->set('value', $value);
@@ -170,18 +161,18 @@ class Callback
         $groupID = 0;
         $roleID = 0;
         if (!empty($defaultGroup)) {
-            $group = $this->modx->getObject(modUserGroup::class, ['name' => $defaultGroup]);
+            $group = $this->modx->getObject('modUserGroup', ['name' => $defaultGroup]);
             if (!empty($group)) {
                 $groupID = $group->get('id');
             }
         }
         if (!empty($groupID)) {
-            $role = $this->modx->getObject(modUserGroupRole::class, ['name' => $defaultRole]);
+            $role = $this->modx->getObject('modUserGroupRole', ['name' => $defaultRole]);
             if (!empty($role)) {
                 $roleID = $role->get('id');
             }
         }
-        $newUser = $this->modx->newObject(modUser::class);
+        $newUser = $this->modx->newObject('modUser');
         $newUser->fromArray([
             'username' => $user['userPrincipalName'],
             'active' => $active,
@@ -196,7 +187,7 @@ class Callback
         $this->addUserSetting($newUser->get('id'), $user['id']);
         $language = explode('-', $user['preferredLanguage']);
         $this->addUserSetting($newUser->get('id'), $language[0], 'manager_language');
-        $this->modx->newObject(modUserProfile::class, [
+        $this->modx->newObject('modUserProfile', [
             'internalKey' => $newUser->get('id'),
             'fullname' => $user['displayName'],
             'email' => $user['mail'],
@@ -210,18 +201,18 @@ class Callback
                 'email' => $user['mail'],
             ]);
             $subject = $this->modx->lexicon('entralogin.email.subject');
-            $mail = new modPHPMailer($this->modx);
-            $mail->set(modMail::MAIL_BODY, $body);
-            $mail->set(modMail::MAIL_FROM, $this->modx->getOption('emailsender'));
-            $mail->set(modMail::MAIL_FROM_NAME, $this->modx->getOption('site_name'));
-            $mail->set(modMail::MAIL_SUBJECT, $subject);
+            $mail = $this->modx->getService('mail', 'mail.modPHPMailer');
+            $mail->set(\modMail::MAIL_BODY, $body);
+            $mail->set(\modMail::MAIL_FROM, $this->modx->getOption('emailsender'));
+            $mail->set(\modMail::MAIL_FROM_NAME, $this->modx->getOption('site_name'));
+            $mail->set(\modMail::MAIL_SUBJECT, $subject);
             foreach ($notify as $email) {
                 $mail->address('to', $email);
             }
             $mail->address('reply-to', $this->modx->getOption('emailsender'));
             $mail->setHTML(true);
             if (!$mail->send()) {
-                $this->modx->log(xPDO::LOG_LEVEL_ERROR, $this->modx->lexicon('entralogin.error.email', ['error' =>print_r($mail->mailer->ErrorInfo, true)]));
+                $this->modx->log(\xPDO::LOG_LEVEL_ERROR, $this->modx->lexicon('entralogin.error.email', ['error' =>print_r($mail->mailer->ErrorInfo, true)]));
             }
             $mail->reset();
         }

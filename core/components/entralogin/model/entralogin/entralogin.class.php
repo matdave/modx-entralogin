@@ -6,6 +6,8 @@ use MODX\EntraLogin\Service;
 
 class EntraLogin extends Service
 {
+
+    public $callbackFile = 'callback.v2.php';
     public function __construct(&$modx, array $options = [])
     {
         $corePath = $modx->getOption('entralogin.core_path', $options, $modx->getOption('core_path', null, MODX_CORE_PATH) . 'components/entralogin/');

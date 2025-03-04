@@ -1,12 +1,9 @@
 <?php
 
-namespace MODX\EntraLogin\Event;
+namespace MODX\EntraLogin\v2\Event;
 
 use MatDave\MODXPackage\Elements\Event\Event;
 use MODX\EntraLogin\Service;
-use MODX\Revolution\modUser;
-use MODX\Revolution\modUserSetting;
-use xPDO\xPDO;
 
 class OnManagerPageBeforeRender extends Event
 {
@@ -19,7 +16,7 @@ class OnManagerPageBeforeRender extends Event
         // System Wide
         $controller = $this->scriptProperties['controller'];
         $action = $controller->config['controller'] ?? null;
-        /** @var modUser $user */
+        /** @var $user */
         $user = $this->modx->user;
         if (!$user || $user->id === 0) {
             return;
@@ -33,7 +30,7 @@ class OnManagerPageBeforeRender extends Event
         }
         if ($action === 'security/profile') {
             if (isset($_GET['entralog']) && $_GET['entralog'] === 'disconnect') {
-                $entralogSetting = $this->modx->getObject(modUserSetting::class, [
+                $entralogSetting = $this->modx->getObject('modUserSetting', [
                     'key' => 'entralog_id',
                     'user' => $user->id,
                 ]);
@@ -48,13 +45,13 @@ class OnManagerPageBeforeRender extends Event
             if (empty($entralogId)) {
                 $this->service->loadClient();
                 if (empty($this->service->client)) {
-                    $this->modx->log(xPDO::LOG_LEVEL_ERROR, 'EntraLogin client not loaded');
+                    $this->modx->log(\xPDO::LOG_LEVEL_ERROR, 'EntraLogin client not loaded');
                     return;
                 }
                 try {
                     $loginUrl = $this->service->client->getAuthorizationUrl();
                 } catch (\Exception $e) {
-                    $this->modx->log(xPDO::LOG_LEVEL_ERROR, $e->getMessage());
+                    $this->modx->log(\xPDO::LOG_LEVEL_ERROR, $e->getMessage());
                 }
             } else {
                 $disconnectUrl = $this->modx->getOption('manager_url') . '?a=security/profile&entralog=disconnect';

@@ -15,6 +15,12 @@ $_lang['entralogin.disable_regular_login_warning'] = '<h2 class="warning">Warnin
 $_lang['entralogin.email.subject'] = 'New manager signed up with Entra';
 $_lang['entralogin.email.body'] = 'New manager signed up on [[+site_name]] with Entra: [[+email]]';
 
+$_lang['entralogin.error.email'] = 'An error occurred while trying to send the email: [[+error]]';
+$_lang['entralogin.error.access_token'] = 'Error getting access token: [[+error]]';
+$_lang['entralogin.error.refresh_token'] = 'Error getting refresh token: [[+error]]';
+$_lang['entralogin.error.tag'] = 'Tag not set, make sure your session_cookie_samesite is set to Lax or empty in the system settings';
+$_lang['entralogin.error.client'] = 'Client not set, please check your system settings.';
+
 $_lang['setting_entralogin.client_id'] = 'Client ID';
 $_lang['setting_entralogin.client_id_desc'] = 'Client ID for Oauth2 from your Entra Developer Console';
 $_lang['setting_entralogin.client_secret'] = 'Client Secret';

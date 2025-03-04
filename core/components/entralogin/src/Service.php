@@ -11,6 +11,8 @@ class Service extends BaseService
 
     public $namespace = 'entralogin';
 
+    public $callbackFile = 'callback.php';
+
     public Entra $client;
 
     public function loadClient()
@@ -24,7 +26,7 @@ class Service extends BaseService
         $tenantId = $this->getOption('tenant_id', [], 'common');
         $redirectUri = rtrim($this->modx->getOption('site_url'), '/') .
             '/' .
-            ltrim($this->options['assetsUrl'].'callback.php', '/');
+            ltrim($this->options['assetsUrl'] . $this->callbackFile, '/');
         $graphHost = $this->getOption('graph_host', [], 'graph.microsoft.com');
         $authHost = $this->getOption('auth_host', [], 'login.microsoftonline.com');
         $scopes = [

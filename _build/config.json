@@ -1,0 +1,86 @@
+{
+  "name": "EntraLogin",
+  "version": "0.0.1",
+  "lowCaseName": "entralogin",
+  "namespace": "EntraLogin",
+  "description": "Entra Login for MODX Revolution",
+  "author": "matdave",
+  "package": {
+    "systemSettings": [
+      {
+        "key": "client_id",
+        "area": "API"
+      },
+      {
+        "key": "client_secret",
+        "area": "API"
+      },
+      {
+        "key": "tenant_id",
+        "area": "API",
+        "value": "common"
+      },
+      {
+        "key": "graph_host",
+        "area": "API",
+        "value": "graph.microsoft.com"
+      },
+      {
+        "key": "auth_host",
+        "area": "API",
+        "value": "login.microsoftonline.com"
+      },
+      {
+        "key": "disable_regular_login",
+        "area": "Security",
+        "type": "combo-boolean",
+        "value": 0
+      },
+      {
+        "key": "allow_signup",
+        "area": "Security",
+        "type": "combo-boolean",
+        "value": 0
+      },
+      {
+        "key": "allow_signup_domains",
+        "area": "Security"
+      },
+      {
+        "key": "allow_signup_active",
+        "area": "Security",
+        "type": "combo-boolean",
+        "value": 0
+      },
+      {
+        "key": "allow_match_by_email",
+        "area": "Security",
+        "type": "combo-boolean",
+        "value": 1
+      },
+      {
+        "key": "default_group",
+        "area": "Security"
+      },
+      {
+        "key": "default_role",
+        "area": "Security",
+        "value": "Member"
+      }
+    ],
+    "elements": {
+      "plugins": [
+        {
+          "name": "EntraLogin",
+          "file": "Login.php",
+          "events": [
+            "OnBeforeManagerLogin",
+            "OnManagerLoginFormRender",
+            "OnManagerLogout",
+            "OnManagerPageBeforeRender"
+          ]
+        }
+      ]
+    }
+  }
+}
