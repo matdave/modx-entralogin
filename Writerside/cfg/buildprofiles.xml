@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE buildprofiles SYSTEM "https://resources.jetbrains.com/writerside/1.0/build-profiles.dtd">
+<buildprofiles xsi:noNamespaceSchemaLocation="https://resources.jetbrains.com/writerside/1.0/build-profiles.xsd"
+               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+    <variables></variables>
+    <build-profile instance="el">
+        <variables>
+            <noindex-content>false</noindex-content>
+            <offline-docs>true</offline-docs>
+            <primary-color>metallic</primary-color>
+            <color-preset>vivid</color-preset>
+            <product-web-url>https://github.com/matdave/modx-entralogin</product-web-url>
+            <index-page-url-prefix>/</index-page-url-prefix>
+        </variables>
+    </build-profile>
+
+</buildprofiles>

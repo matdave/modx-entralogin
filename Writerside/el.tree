@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE instance-profile
+        SYSTEM "https://resources.jetbrains.com/writerside/1.0/product-profile.dtd">
+
+<instance-profile id="el"
+                 name="Entra Login"
+                 start-page="index.md">
+
+    <toc-element topic="index.md"/>
+    <toc-element toc-title="Usage">
+        <toc-element topic="Microsfot-Entra-Admin-Center.md"/>
+        <toc-element topic="Configuring-MODX.md"/>
+        <toc-element topic="MODX-Users.md"/>
+    </toc-element>
+</instance-profile>

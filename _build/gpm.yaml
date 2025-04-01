@@ -46,6 +46,9 @@ systemSettings:
       type: combo-boolean
       value: 1
 
+    - key: allow_signup_notify
+      area: Security
+
     - key: default_group
       area: Security
 
