@@ -12,6 +12,9 @@
             <color-preset>vivid</color-preset>
             <product-web-url>https://github.com/matdave/modx-entralogin</product-web-url>
         </variables>
+        <footer>
+            <social type="github" href="https://github.com/matdave/cspect"/>
+        </footer>
     </build-profile>
 
 </buildprofiles>
