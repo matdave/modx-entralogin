@@ -30,6 +30,7 @@ All API settings are **required** for Entra Login to function.
 | entralogin.default_group         | Default MODX user group for new signups.                                                                                      |         |
 | entralogin.default_role          | Default user group role for new signups.                                                                                      | Member  |
 | entralogin.disable_regular_login | Disable the regular login form options. (Warning: this will disable the regular login form for all users.)                    | No      |
+| entralogin.enforce_entra_login   | Force users to login with Entra if they have a connected account.                                                             | No      |
 
 
 <warning>

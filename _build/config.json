@@ -1,6 +1,6 @@
 {
   "name": "EntraLogin",
-  "version": "0.1.0-beta",
+  "version": "0.2.0-beta",
   "lowCaseName": "entralogin",
   "namespace": "EntraLogin",
   "description": "Entra Login for MODX Revolution",
@@ -32,6 +32,12 @@
       },
       {
         "key": "disable_regular_login",
+        "area": "Security",
+        "type": "combo-boolean",
+        "value": 0
+      },
+      {
+        "key": "enforce_entra_login",
         "area": "Security",
         "type": "combo-boolean",
         "value": 0
@@ -70,6 +76,12 @@
         "key": "default_role",
         "area": "Security",
         "value": "Member"
+      },
+      {
+        "key": "debug",
+        "area": "Development",
+        "type": "combo-boolean",
+        "value": 0
       }
     ],
     "elements": {

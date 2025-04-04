@@ -28,6 +28,20 @@ class OnManagerPageBeforeRender extends Event
             $this->modx->controller->addLexiconTopic('entralogin:default');
             $this->modx->controller->addLastJavascript($this->service->getOption('jsUrl') . 'warning.helper.js');
         }
+        if ($this->service->getOption('debug') && !empty($entralogId)) {
+            // $this->modx->controller->addLexiconTopic('entralogin:default');
+            // $this->modx->controller->addLastJavascript($this->service->getOption('jsUrl') . 'debug.helper.js');
+            $this->service->loadClient();
+            $debug = $this->service->client->getTag();
+            $debug['token'] = $_SESSION['elog_access_token'];
+            $this->modx->controller->addHtml('<script type="text/javascript">
+            Ext.onReady(function() {
+                entralogin.debug = ' . $this->modx->toJSON([
+                    $debug
+                ]) . ';
+            });
+            </script>');
+        }
         if ($action === 'security/profile') {
             if (isset($_GET['entralog']) && $_GET['entralog'] === 'disconnect') {
                 $entralogSetting = $this->modx->getObject('modUserSetting', [

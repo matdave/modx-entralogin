@@ -4,6 +4,7 @@ var EntraLogin = function (config){
 };
 Ext.extend(EntraLogin, Ext.Component, {
     config: {},
+    debug: []
 });
 Ext.reg('entralogin', EntraLogin);
 entralogin = new EntraLogin();

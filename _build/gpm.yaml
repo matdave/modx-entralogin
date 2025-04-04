@@ -1,5 +1,5 @@
 name: EntraLogin
-version: 0.1.0-beta
+version: 0.2.0-beta
 lowCaseName: entralogin
 namespace: EntraLogin
 description: 'Entra Login for MODX Revolution'
@@ -24,6 +24,11 @@ systemSettings:
       value: login.microsoftonline.com
 
     - key: disable_regular_login
+      area: Security
+      type: combo-boolean
+      value: 0
+
+    - key: enforce_entra_login
       area: Security
       type: combo-boolean
       value: 0

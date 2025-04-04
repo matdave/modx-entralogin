@@ -92,6 +92,7 @@ class Callback
             ['key' => 'entralog_id', 'value' => $me['id']]
         );
         if (!empty($userSetting)) {
+            $this->syncUserDetails($userSetting->get('user'), $me);
             $this->loginUserWithID($userSetting->get('user'));
             return;
         } elseif ($this->modx->user->isAuthenticated('mgr')) {
@@ -103,6 +104,7 @@ class Callback
             $userByEmail = $this->modx->getObject('modUserProfile', ['email' => $me['mail']]);
             if (!empty($userByEmail)) {
                 $this->addUserSetting($userByEmail->get('internalKey'), $me['id']);
+                $this->syncUserDetails($userByEmail->get('internalKey'), $me);
                 $this->loginUserWithID($userByEmail->get('internalKey'));
                 return;
             }
@@ -113,7 +115,7 @@ class Callback
         $this->sendManager();
     }
 
-    private function loginUserWithID($id): void
+    private function loginUserWithID(int $id): void
     {
         $user = $this->modx->getObject('modUser', $id);
         if (!empty($user)) {
@@ -191,6 +193,7 @@ class Callback
             'internalKey' => $newUser->get('id'),
             'fullname' => $user['displayName'],
             'email' => $user['mail'],
+            'mobilephone' => $user['mobilePhone'],
         ])->save();
         $notify = $this->modx->getOption('entralogin.allow_signup_notify', null, '');
         $notify = explode(',', $notify);
@@ -220,6 +223,20 @@ class Callback
             $this->loadUser($newUser);
         } else {
             $this->sendManager(true, ['signup' => '1']);
+        }
+    }
+
+    private function syncUserDetails(int $id, array $user): void
+    {
+        $modUser = $this->modx->getObject('modUser', $id);
+        if (!empty($modUser)) {
+            $profile = $modUser->getOne('Profile');
+            if (!empty($profile)) {
+                $profile->set('fullname', $user['displayName']);
+                $profile->set('email', $user['mail']);
+                $profile->set('mobilephone', $user['mobilePhone']);
+                $profile->save();
+            }
         }
     }
 

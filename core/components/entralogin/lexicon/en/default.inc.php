@@ -10,6 +10,7 @@ $_lang['entralogin.login_with_entra'] = 'Login with Entra';
 $_lang['entralogin.connect_entra'] = 'Connect Entra Account';
 $_lang['entralogin.disconnect_entra'] = 'Disconnect Entra Account';
 $_lang['entralogin.disable_regular_login'] = 'Regular login is disabled';
+$_lang['entralogin.enforce_entra_login'] = 'Login with Entra required';
 $_lang['entralogin.disable_regular_login_warning'] = '<h2 class="warning">Warning</h2><p>Regular login is disabled. <a href="[[+link]]">Please connect your account on your profile page.</a></p>';
 
 $_lang['entralogin.email.subject'] = 'New manager signed up with Entra';
@@ -41,6 +42,8 @@ $_lang['setting_entralogin.default_role'] = 'Default Role';
 $_lang['setting_entralogin.default_role_desc'] = 'Default user group role for new signups.';
 $_lang['setting_entralogin.disable_regular_login'] = 'Disable regular login';
 $_lang['setting_entralogin.disable_regular_login_desc'] = 'Disable the regular login form options. (Warning: this will disable the regular login form for all users.)';
+$_lang['setting_entralogin.enforce_entra_login'] = 'Enforce Entra login';
+$_lang['setting_entralogin.enforce_entra_login_desc'] = 'Force users to login with Entra if they have a connected account.';
 
 $_lang['setting_entralogin.auth_host'] = 'Authentication Host';
 $_lang['setting_entralogin.auth_host_desc'] = 'Authentication domain for login.';
