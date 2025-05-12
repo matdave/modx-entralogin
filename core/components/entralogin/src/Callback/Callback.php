@@ -41,13 +41,13 @@ class Callback
             throw new Exception($this->modx->lexicon('entralogin.error.client'));
         }
 
-        if (isset($_GET['code'])) {
-            $tag = $this->client->getTag();
+        if (isset($_POST['code']) && isset($_POST['state'])) {
+            $tag = $this->client->getTag($_POST['state']);
             if (empty($tag)) {
                 throw new Exception($this->modx->lexicon('entralogin.error.tag'));
             }
             $codeVerifier = $tag['codeVerifier'];
-            $req = $this->client->getAccessToken($_GET['code'], $codeVerifier);
+            $req = $this->client->getAccessToken($_POST['code'], $codeVerifier);
             $resp = json_decode($req, true);
             if (empty($resp) || !isset($resp['access_token'])) {
                 throw new Exception($this->modx->lexicon('entralogin.error.access_token', ['error' => $req]));
@@ -59,6 +59,18 @@ class Callback
                 'refresh_token' => $resp['refresh_token'] ?? '',
             ]);
             $this->loginUser();
+        }
+        if (isset($_POST['id_token'])) {
+            // validate the jwt
+            if ($this->client->isIdTokenValid($_POST['id_token'])) {
+                $this->client->setAccessToken([
+                    'token' => $_POST['access_token'],
+                    'created' => strtotime('now'),
+                    'expires_in' => (int) $_POST['expires_in'] ?? 0,
+                    'refresh_token' => '',
+                ]);
+                $this->loginUser();
+            }
         }
         if (!empty($_SESSION['elog_access_token'])) {
             $this->client->setAccessToken($_SESSION['elog_access_token']);

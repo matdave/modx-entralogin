@@ -51,3 +51,5 @@ $_lang['setting_entralogin.graph_host'] = 'Graph Host';
 $_lang['setting_entralogin.graph_host_desc'] = 'Microsoft Graph domain for receiving user information.';
 $_lang['setting_entralogin.tenant_id'] = 'Tenant ID';
 $_lang['setting_entralogin.tenant_id_desc'] = 'ID of the Microsoft Entra directory tenant.';
+$_lang['setting_entralogin.method'] = 'Auth Method';
+$_lang['setting_entralogin.method_desc'] = 'Choose either oauth or oidc';

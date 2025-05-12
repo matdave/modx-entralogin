@@ -1,5 +1,5 @@
 name: EntraLogin
-version: 0.2.0-beta
+version: 1.0.0-pl
 lowCaseName: entralogin
 namespace: EntraLogin
 description: 'Entra Login for MODX Revolution'

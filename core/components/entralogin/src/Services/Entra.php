@@ -3,8 +3,16 @@
 namespace MODX\EntraLogin\Services;
 
 use Exception;
+use Firebase\JWT\CachedKeySet;
+use Firebase\JWT\JWK;
+use Firebase\JWT\JWT;
 use MatDave\MODXPackage\Traits\Curl;
 use MODX\EntraLogin\Service;
+use Phpfastcache\Exceptions\PhpfastcacheDriverCheckException;
+use Phpfastcache\Exceptions\PhpfastcacheDriverException;
+use Phpfastcache\Exceptions\PhpfastcacheDriverNotFoundException;
+use Phpfastcache\Exceptions\PhpfastcacheExtensionNotInstalledException;
+use Phpfastcache\Exceptions\PhpfastcacheLogicException;
 
 class Entra
 {
@@ -62,10 +70,12 @@ class Entra
         return rtrim($this->option['oauthUrl'], '/') . '/' . trim($this->option['tenantId'], '/');
     }
 
-    public function getTag() : array
+    public function getTag(string $state) : array
     {
-        if (empty($this->tag) && !empty($_SESSION['elog_tag'])) {
-            $this->tag = array_merge($_SESSION['elog_tag'], ['from' => 'session']);
+        $cache = $this->service->modx->getCacheManager();
+        $session = $cache->get('tag_' . $state);
+        if (!empty($session)) {
+            $this->tag = array_merge($session, ['from' => 'session']);
         }
         return $this->tag;
     }
@@ -77,18 +87,31 @@ class Entra
     {
         $this->api = $this->getOauthUrl();
         $state = $codeVerifier = $this->generateCodeVerifier();
-        $codeChallenge = $this->generateCodeChallenge($codeVerifier);
-        $this->setTag(['state'=>$state, 'codeVerifier'=>$codeVerifier, 'codeChallenge'=>$codeChallenge]);
-        $query = [
-            'client_id' => $this->option['clientId'],
-            'code_challenge' => $codeChallenge,
-            'code_challenge_method' => 'S256',
-            'response_type' => 'code',
-            'redirect_uri'  => $this->option['redirectUri'],
-            'response_mode' => 'query',
-            'scope'         => $this->option['scope'],
-            'state'         => $state,
-        ];
+        if (strtolower($this->service->getOption('method', [], 'oauth')) === 'oidc') {
+            $this->setTag(['state'=>$state, 'codeVerifier'=>$codeVerifier]);
+            $query = [
+                'client_id' => $this->option['clientId'],
+                'response_type' => 'id_token token',
+                'redirect_uri'  => $this->option['redirectUri'],
+                'response_mode' => 'form_post',
+                'scope'         => $this->option['scope'],
+                'nonce'         => $state,
+                'state'         => $state,
+            ];
+        } else {
+            $codeChallenge = $this->generateCodeChallenge($codeVerifier);
+            $this->setTag(['state'=>$state, 'codeVerifier'=>$codeVerifier, 'codeChallenge'=>$codeChallenge]);
+            $query = [
+                'client_id' => $this->option['clientId'],
+                'code_challenge' => $codeChallenge,
+                'code_challenge_method' => 'S256',
+                'response_type' => 'code',
+                'redirect_uri'  => $this->option['redirectUri'],
+                'response_mode' => 'form_post',
+                'scope'         => $this->option['scope'],
+                'state'         => $state,
+            ];
+        }
         return $this->api .
             '/' .
             trim($this->option['oauthAuthorizeEndpoint'], '/') .
@@ -171,7 +194,8 @@ class Entra
     private function setTag(array $tag)
     {
         $this->tag = $tag;
-        $_SESSION['elog_tag'] = $tag;
+        $cache = $this->service->modx->getCacheManager();
+        $cache->set('tag_' . $tag['state'], $this->tag);
     }
 
     /**
@@ -205,4 +229,36 @@ class Entra
         return trim(strtr(base64_encode(hash('sha256', $codeVerifier, true)), '+/', '-_'), '=');
     }
 
+    /**
+     * @throws PhpfastcacheExtensionNotInstalledException
+     * @throws PhpfastcacheDriverCheckException
+     * @throws PhpfastcacheLogicException
+     * @throws PhpfastcacheDriverNotFoundException
+     * @throws PhpfastcacheDriverException
+     */
+    public function isIdTokenValid(string $idToken): bool
+    {
+        // keys https://login.microsoftonline.com/{tenant}/discovery/v2.0/keys
+        $keyStore = $this->getOauthUrl() . '/discovery/v2.0/keys';
+        $httpClient = new \GuzzleHttp\Client();
+        $httpFactory = new \GuzzleHttp\Psr7\HttpFactory();
+        $cacheItemPool = \Phpfastcache\CacheManager::getInstance('files');
+        $keySet = new CachedKeySet(
+            $keyStore,
+            $httpClient,
+            $httpFactory,
+            $cacheItemPool,
+            null, // $expiresAfter int seconds to set the JWKS to expire
+            true,  // $rateLimit    true to enable rate limit of 10 RPS on lookup of invalid keys
+            'RS256'
+        );
+        try {
+            $decoded = JWT::decode($idToken, $keySet);
+            $this->getTag($decoded->nonce);
+            return (!empty($this->tag));
+        } catch (\Exception $e) {
+            $this->service->modx->log(1, 'JWT Error: ' . $e->getMessage());
+            return false;
+        }
+    }
 }

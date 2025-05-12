@@ -108,3 +108,20 @@ The manifest is a JSON file which describes your application. To edit this file:
 ![manifest_update.png](manifest_update.png)
 
 You can learn more here [Supported Account Types](https://learn.microsoft.com/en-us/entra/identity-platform/supported-accounts-validation)
+
+## Using OIDC instead of Standard OAuth (optional) {id=oidc}
+
+If you prefer to use OIDC instead of the standard OAuth flow, you can do that by:
+
+1. Adjust system settings, changing `entralogin.method` to "oidc" instead of "oath"
+2. Adjust the manifest JSON file (described above) by adding the following lines:
+
+```JSON
+    "oauth2AllowIdTokenImplicitFlow": true,
+    "oauth2AllowImplicitFlow": true,
+    "oauth2Permissions": [],
+    "oauth2RequirePostResponse": false,
+```
+3. It may require you to refresh the page and update the values again after first adding.
+
+![manifest_oidc.png](manifest_oidc.png)
