@@ -257,7 +257,7 @@ class Entra
             $this->getTag($decoded->nonce);
             return (!empty($this->tag));
         } catch (\Exception $e) {
-            $this->service->modx->log(1, 'JWT Error: ' . $e->getMessage());
+            $this->service->modx->log(\XPDO::LOG_LEVEL_ERROR, 'JWT Error: ' . $e->getMessage());
             return false;
         }
     }
