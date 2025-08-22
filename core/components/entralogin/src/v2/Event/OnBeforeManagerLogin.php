@@ -37,7 +37,10 @@ class OnBeforeManagerLogin extends Event
             if (!empty($username)) {
                 $user = $this->modx->getObject('modUser', ['username' => $username]);
                 if (!empty($user)) {
-                    $entraSetting = $user->getOne('UserSettings', ['key' => 'entralog_id']);
+                    $entraSetting = $user->getOne('UserSettings', [
+                        'key' => 'entralog_id',
+                        'user' => $user->get('id')
+                    ]);
                     if (!empty($entraSetting)) {
                         try {
                             $loginURL = $this->service->client->getAuthorizationUrl();

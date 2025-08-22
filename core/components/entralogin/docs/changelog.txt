@@ -1,3 +1,7 @@
+1.0.1-pl
+=============
+- Fix issue with users not being able to login when enforce_entra_login was set
+
 1.0.0-pl
 =============
 - Add OIDC flow support
