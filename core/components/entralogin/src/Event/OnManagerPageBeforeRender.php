@@ -19,6 +19,8 @@ class OnManagerPageBeforeRender extends Event
         // System Wide
         $controller = $this->scriptProperties['controller'];
         $action = $controller->config['controller'] ?? null;
+        $namespace = $controller->config['namespace'] ?? null;
+        if ($namespace == 'entralogin') return;
         /** @var modUser $user */
         $user = $this->modx->user;
         if (!$user || $user->id === 0) {

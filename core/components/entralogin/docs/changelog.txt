@@ -1,3 +1,7 @@
+1.1.0-pl
+=============
+- Add a grid to see which users are connected to Entra
+
 1.0.1-pl
 =============
 - Fix issue with users not being able to login when enforce_entra_login was set

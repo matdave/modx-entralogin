@@ -1,11 +1,19 @@
 {
   "name": "EntraLogin",
-  "version": "1.0.1-pl",
+  "version": "1.1.0-pl",
   "lowCaseName": "entralogin",
   "namespace": "EntraLogin",
   "description": "Entra Login for MODX Revolution",
   "author": "matdave",
   "package": {
+    "menus": [
+      {
+        "text": "entralogin.users",
+        "description": "entralogin.users.desc",
+        "action": "users",
+        "permissions": "entralogin_manage_auth"
+      }
+    ],
     "systemSettings": [
       {
         "key": "client_id",
@@ -101,6 +109,13 @@
             "OnManagerPageBeforeRender"
           ]
         }
+      ]
+    }
+  },
+  "build" : {
+    "resolver" : {
+      "after" : [
+        "acls.php"
       ]
     }
   }

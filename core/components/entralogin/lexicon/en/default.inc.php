@@ -22,6 +22,23 @@ $_lang['entralogin.error.refresh_token'] = 'Error getting refresh token: [[+erro
 $_lang['entralogin.error.tag'] = 'Tag not set, make sure your session_cookie_samesite is set to Lax or empty in the system settings';
 $_lang['entralogin.error.client'] = 'Client not set, please check your system settings.';
 
+//Users
+$_lang['entralogin.users'] = 'Entra Users';
+$_lang['entralogin.users.desc'] = 'Manage the authentication status of MODX users.';
+$_lang['entralogin.users.username'] = 'Username';
+$_lang['entralogin.users.fullname'] = 'Full Name';
+$_lang['entralogin.users.email'] = 'Email';
+$_lang['entralogin.users.additional_groups'] = 'Additional Groups';
+$_lang['entralogin.users.clear_entra'] = 'Clear Entra';
+$_lang['entralogin.users.entra_status'] = 'Entra Status';
+$_lang['entralogin.users.entra_value'] = 'Use Entra';
+$_lang['entralogin.users.entra_status_'] = 'Unknown';
+$_lang['entralogin.users.entra_status_not_set'] = 'Not Set';
+$_lang['entralogin.users.entra_status_verified'] = 'Verified';
+$_lang['entralogin.users.with-selected'] = 'With Selected';
+$_lang['entralogin.users.export'] = 'Export';
+$_lang['entralogin.user.activefilter.empty'] = 'User Status';
+
 $_lang['setting_entralogin.client_id'] = 'Client ID';
 $_lang['setting_entralogin.client_id_desc'] = 'Client ID for Oauth2 from your Entra Application Dashboard';
 $_lang['setting_entralogin.client_secret'] = 'Client Secret';
